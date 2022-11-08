@@ -9,25 +9,26 @@ class Handler:
         menOp = -1
         blGo = True
         Hdl = Handler()
-        Hdl.loadGuestInfo()
-        Hdl.createRooms()
-        Hdl.readRooms()
+        self.loadGuestInfo()
+        self.createRooms()
+        #self.readRooms()
 
 
 
 
         #handle new walk in , new reservation , existing reservation check in .
         while  blGo:
+            self.readRooms()
             menOp = Hdl.mainMenu()
             match menOp:
                 case "0":
                     blGo = False
                 case "1":
-                    Hdl.newWalkin()
+                    self.newWalkin()
                 case "2":
-                    Hdl.newArrival()
+                    self.newArrival()
                 case "3":
-                    Hdl.newReservation()
+                    self.newReservation()
                 case "5":
                     print(self.rooms)
 
@@ -115,11 +116,13 @@ class Handler:
         if len(room)==0:
             print("Sorry out of rooms")
         else:
-            print("Dear" + fname + " You are staying in room: " + str(room[0]) + " on floor " + str(room[1]))
+            print("Dear " + fname + " You are staying in room: " + str(room[1]) + " on floor " + str(room[0]))
             newGuest = guest(fname, lName, lAge, lPhone, lCC,room)
-            self.currentResidents.append(newGuest)#adds it to a dict of current guest
-            self.readRooms() # reload rooms
             newGuest.savePerson(newGuest)
+            self.currentResidents.append(newGuest)#adds it to a dict of current guest
+
+
+
 
 
     def validateRoom(self,rType):
@@ -139,18 +142,18 @@ class Handler:
 
         return rType
     def newReservation(self):
-        pastGuest =input("Past Guest ? Y/N").lower()
+        pastGuest =input("Past Guest ? Y/N ").lower()
         if pastGuest !="y":
-            fname = input("First Name:")
-            lName = input("Last Name:")
-            lAge = input("Age:")
-            lPhone = input("Phone:")
-            lCC = input("Credit Card")
-            roomType = input("What kind of Room ?")
+            fname = input("First Name: ")
+            lName = input("Last Name: ")
+            lAge = input("Age: ")
+            lPhone = input("Phone: ")
+            lCC = input("Credit Card ")
+            roomType = input("What kind of Room ? ")
             rType = self.validateRoom(roomType)
             los = input(" how long would you like to stay ")
 
-            checkIn = input("would you like to chekc in now ? Y/N").lower()
+            checkIn = input("would you like to chekc in now ? Y/N ").lower()
 
             if checkIn == "y":
                 room = self.getEmptyRoom(self,roomType)
@@ -172,41 +175,42 @@ class Handler:
                 newGuest = guest(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5] + arr[6])
                 self.currentResidents.append(newGuest)
         file.close()
-        for x in self.currentResidents:
-            print(x.toString())
+
     #this method reads the current residents change the rooms to their name.
     def readRooms(self):
 
-        for i in range(len(self.currentResidents)):
-            #print(self.currentResidents[i].toString())
-            room =(self.currentResidents[i].getRoom())
-
-            arrRooms = []
-            for i in range(len(room)):
-                arrRooms.append(room[i])
-
-            #print(arrRooms)
-            if len(arrRooms)>0:
-                indX = int(arrRooms[1])
-                indY = int(arrRooms[3])
-                #print(str(indX) + " index" + str(indY))
-                self.rooms[indX][indY]=(self.currentResidents[i].getLName())
+        # for i in range(len(self.currentResidents)):
+        #     #print(self.currentResidents[i].toString())
+        #     room =(self.currentResidents[i].getRoom())
+        #
+        #     arrRooms = []
+        #     for i in range(len(room)):
+        #         arrRooms.append(room[i])
+        #
+        #     #print(arrRooms)
+        #     if len(arrRooms)>0:
+        #         indX = int(arrRooms[1])
+        #         indY = int(arrRooms[3])
+        #         #print(str(indX) + " index" + str(indY))
+        #         self.rooms[indX][indY]=(self.currentResidents[i].getLName())
 
 
             #now go in the rooms and set it to taken .
-        # arrRoomNum=[]
-        # indx =-1
-        # indy=-1
-        # for x in self.currentResidents:
-        #        arrRoomNum = x.getRoom()
-        #
-        # indx= arrRoomNum[1]
-        # indy = arrRoomNum[3]
-        #
-        # indx = int(indx)
-        # indy = int(indy)
-        #
-        #
-        # print(self.rooms)
+        arrRoomNum=[]
+        lName = ""
+        indx =-1
+        indy=-1
+        for x in self.currentResidents:
+            #print(x.toString())
+            arrRoomNum = x.getRoom()
+            lName = x.getLName()
+            indx= arrRoomNum[1]
+
+            indy = arrRoomNum[3]
+
+
+            indx = int(indx)
+            indy = int(indy)
+            self.rooms[indx][indy] = lName
 
 

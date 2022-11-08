@@ -43,12 +43,12 @@ class guest:
         for x in file:
             if x == object.toStringSave():
                 infile== True
-        file.close()
-        if infile == False :
-            file = open("guestInfo.txt", "a")
-            file.writelines(object.toStringSave())
-        # next save to exel spreadsheet , make headers
-            file.close()
+                file.close()
+            else:
+                file = open("guestInfo.txt", "a")
+                file.write(object.toStringSave() + "\n")
+            # next save to exel spreadsheet , make headers
+                file.close()
 
     def getFName(self):
         return self.fName
