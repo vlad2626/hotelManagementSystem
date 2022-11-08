@@ -3,12 +3,13 @@ from typing import Any
 
 class guest:
 
-    def __init__(self, fName,lName,lAge,lPhone,lCC):
+    def __init__(self, fName,lName,lAge,lPhone,lCC, roomNum):
         self.fName = fName
         self.lName = lName
         self.lAge = lAge
         self.lphone = lPhone
         self.lCC = lCC
+        self.roomNum = roomNum
 
     def getCC(self):
         return  self.lCC
@@ -35,16 +36,31 @@ class guest:
     def savePerson(self, object):
         b = object.toStringSave()
         arr = b.split(" ")
+        infile = False
+        file = open("guestInfo.txt", "r")
+
+        #checks to see if duplucate
+        for x in file:
+            if x == object.toStringSave():
+                infile== True
+        file.close()
+        if infile == False :
+            file = open("guestInfo.txt", "a")
+            file.writelines(object.toStringSave())
         # next save to exel spreadsheet , make headers
+            file.close()
 
-        exit
-
-
+    def getFName(self):
+        return self.fName
+    def getLName(self):
+        return self.lName
+    def getRoom(self):
+        return self.roomNum
     def toStringSave(self):
-        return  self.fName + " " +self.lName + " " +  self.lAge + " " + self.lphone + " " + self.lCC
+        return  str(self.fName) + " " + str(self.lName) + " " +  str(self.lAge) + " " + str(self.lphone) + " " + str(self.lCC) + " " + str(self.roomNum)
 
     def toString(self):
-        return " First Name: " + self.fName + ", Last Name" + self.lName +  ", Age" + self.lAge + " Phone Number" + self.lphone + ", CC " + self.lCC
+        return " First Name: " + self.fName + ", Last Name" + self.lName +  ", Age" + self.lAge + " Phone Number" + self.lphone + ", CC " + self.lCC + " RoomNum " + self.roomNum
 
 
 
