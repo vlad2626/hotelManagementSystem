@@ -46,7 +46,7 @@ class guest:
                 file.close()
         if infile== False:
             file = open("guestInfo.txt", "a")
-            file.write(object.toStringSave() + "\n")
+            file.write(object.toStringSave())
             # next save to exel spreadsheet , make headers
             file.close()
 
@@ -57,7 +57,7 @@ class guest:
     def getRoom(self):
         return self.roomNum
     def toStringSave(self):
-        return  str(self.fName) + " " + str(self.lName) + " " +  str(self.lAge) + " " + str(self.lphone) + " " + str(self.lCC) + " " + str(self.roomNum)
+        return  str(self.fName) + " " + str(self.lName) + " " +  str(self.lAge) + " " + str(self.lphone) + " " + str(self.lCC) + " " + str(self.roomNum) + '\n'
 
     def toString(self):
         return " First Name: " + self.fName + ", Last Name" + self.lName +  ", Age" + self.lAge + " Phone Number" + self.lphone + ", CC " + self.lCC + " RoomNum " + self.roomNum

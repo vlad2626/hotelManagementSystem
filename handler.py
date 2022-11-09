@@ -52,14 +52,20 @@ class Handler:
         room= []
         floor= int(rType)
         for counter in range(len(self.rooms)):
-            dupRooms.append(self.rooms[floor][counter])
-
-        print("Dup Room " + str(dupRooms))
-        for room in range(len(dupRooms)):
-            if dupRooms[room]!="empty":
-                room=[rType,room]
-
+            status=self.rooms[floor][counter]
+            print(self.rooms[floor][counter])
+            print(status + "Status")
+            if status =="Empty":
+                room = [rType, counter]
                 break
+
+
+
+        # for room in range(len(dupRooms)):
+        #     if dupRooms[room]!="empty":
+        #         room=[rType,room]
+        #
+        #         break
 
         print("Room number" + str(room))
         return room
@@ -89,8 +95,6 @@ class Handler:
                                "3. New Reservation\n"
                                "4. Checkout\n"
                                "5. Room stats\n"
-                               "6. Checkout all rooms \n"
-                               "7. Check in all rooms \n"
                                "0. Exit")
         menOP = input("Menu option: ")
         return menOP
@@ -98,13 +102,17 @@ class Handler:
 
 
     def newWalkin(self):
-        fname = input("First Name:")
-        lName= input("Last Name:")
-        lAge= input("Age:")
-        lPhone = input("Phone:")
-        lCC = input("Credit Card")
-        roomType = input("What kind of Room ?")
-        los = input(" how long would you like to stay ")
+        res = input("Do you have a reservation y/n").lower()
+        if res=="n":
+            fname = input("First Name:")
+            lName= input("Last Name:")
+            lAge= input("Age:")
+            lPhone = input("Phone:")
+            lCC = input("Credit Card")
+            roomType = input("What kind of Room ?")
+            los = input(" how long would you like to stay ")
+        else:
+            #create room type and store it to check in guest
 
 
 
@@ -159,6 +167,9 @@ class Handler:
                 room = self.getEmptyRoom(self,roomType)
                 newGuest = guest(fname, lName, lAge, lPhone, lCC, room)
                 self.currentResidents.append(newGuest)
+            else:
+                newGuest = guest(fname, lName, lAge, lPhone, lCC, " ")
+                self.reservations.append((newGuest))
 
 
         #print(self.rooms)
@@ -167,14 +178,16 @@ class Handler:
 
     #this method loads the guest info when first running program
     def loadGuestInfo(self):
-
         file= open("guestInfo.txt", "r")
         for line in file:
-            if len(line) > 5:
+            if len(line) != 0:
                 arr = line.split(" ")
                 newGuest = guest(arr[0],arr[1],arr[2],arr[3],arr[4],arr[5] + arr[6])
                 self.currentResidents.append(newGuest)
         file.close()
+
+
+
 
     #this method reads the current residents change the rooms to their name.
     def readRooms(self):
@@ -200,17 +213,17 @@ class Handler:
         lName = ""
         indx =-1
         indy=-1
+        # chck if its empty or not.
         for x in self.currentResidents:
             #print(x.toString())
-            arrRoomNum = x.getRoom()
-            lName = x.getLName()
-            indx= arrRoomNum[1]
-
-            indy = arrRoomNum[3]
-
-
-            indx = int(indx)
-            indy = int(indy)
-            self.rooms[indx][indy] = lName
-
+            try:
+                arrRoomNum = x.getRoom()
+                lName = x.getLName()
+                indx= arrRoomNum[1]
+                indy = arrRoomNum[3]
+                indx = int(indx)
+                indy = int(indy)
+                self.rooms[indx][indy] = lName
+            except Exception :
+                break
 
