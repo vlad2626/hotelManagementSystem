@@ -29,6 +29,8 @@ class Handler:
                     self.newArrival()
                 case "3":
                     self.newReservation()
+                case "4":
+                    self.checkout()
                 case "5":
                     print(self.rooms)
 
@@ -111,15 +113,20 @@ class Handler:
             lCC = input("Credit Card")
             roomType = input("What kind of Room ?")
             los = input(" how long would you like to stay ")
+            rType = self.validateRoom(roomType)
+            room = self.getEmptyRoom(rType)
         else:
             #create room type and store it to check in guest
+            lName = input("lName")
+            for x in self.reservations:
+                if x.getLName() == lName:
+                    roomType = input("What kind of room would you like?")
+                    rType = self.validateRoom(roomType)
+                    room = self.getEmptyRoom(rType)
+                    break
 
-
-
-        #1.check empty rooms
         #2. Check guest into one of the empty room s.
-        rType = self.validateRoom(roomType)
-        room = self.getEmptyRoom(rType)
+
 
         if len(room)==0:
             print("Sorry out of rooms")
@@ -150,26 +157,25 @@ class Handler:
 
         return rType
     def newReservation(self):
-        pastGuest =input("Past Guest ? Y/N ").lower()
-        if pastGuest !="y":
-            fname = input("First Name: ")
-            lName = input("Last Name: ")
-            lAge = input("Age: ")
-            lPhone = input("Phone: ")
-            lCC = input("Credit Card ")
-            roomType = input("What kind of Room ? ")
-            rType = self.validateRoom(roomType)
-            los = input(" how long would you like to stay ")
 
-            checkIn = input("would you like to chekc in now ? Y/N ").lower()
+        fname = input("First Name: ")
+        lName = input("Last Name: ")
+        lAge = input("Age: ")
+        lPhone = input("Phone: ")
+        lCC = input("Credit Card ")
+        roomType = input("What kind of Room ? ")
+        rType = self.validateRoom(roomType)
+        los = input(" how long would you like to stay ")
 
-            if checkIn == "y":
-                room = self.getEmptyRoom(self,roomType)
-                newGuest = guest(fname, lName, lAge, lPhone, lCC, room)
-                self.currentResidents.append(newGuest)
-            else:
-                newGuest = guest(fname, lName, lAge, lPhone, lCC, " ")
-                self.reservations.append((newGuest))
+        checkIn = input("would you like to chekc in now ? Y/N ").lower()
+
+        if checkIn == "y":
+            room = self.getEmptyRoom(self,roomType)
+            newGuest = guest(fname, lName, lAge, lPhone, lCC, room)
+            self.currentResidents.append(newGuest)
+        else:
+            newGuest = guest(fname, lName, lAge, lPhone, lCC, " ")
+            self.reservations.append((newGuest))
 
 
         #print(self.rooms)
@@ -227,3 +233,20 @@ class Handler:
             except Exception :
                 break
 
+    def checkout(self):
+        counter=0
+        lName = input("who are you checking out ?")
+        try:
+            for i in self.currentResidents:
+                if lName == i.getLName():
+                    room = i.getRoom()
+                    indx = int(room[1])
+                    indy = int(room[3])
+                    print(str(indx) + " " + str(indy))
+                    self.rooms[indx][indy]="Empty"
+                    break
+                counter +=1
+            del(self.currentResidents[counter])
+            print(self.rooms)
+        except IndexError:
+            print("Guest not inhouse unable to check out")
